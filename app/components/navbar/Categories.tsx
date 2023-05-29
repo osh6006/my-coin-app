@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Container from "../Container";
 import CategoryBox from "./CategoryBox";
@@ -9,7 +11,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 export const categories = [
   {
-    label: "TopPrice",
+    label: "Top",
     icon: BiMedal,
     description: "This property is top price coin",
     isNew: false,

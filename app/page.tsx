@@ -1,3 +1,15 @@
-export default function Home() {
-  return <div className="text-rose-500 text-2xl">Hello Coin App</div>;
+import ClientOnly from "./components/ClientOnly";
+import Container from "./components/Container";
+import MainContents from "./components/contents/MainContents";
+
+export default async function Home() {
+  return (
+    <div>
+      <ClientOnly>
+        <Container>
+          <MainContents />
+        </Container>
+      </ClientOnly>
+    </div>
+  );
 }
