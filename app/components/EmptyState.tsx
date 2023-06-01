@@ -11,8 +11,8 @@ interface EmptyState {
 }
 
 const EmptyState: React.FC<EmptyState> = ({
-  title = "No exact matches",
-  subtitle = "Try changing or removing some of your filters",
+  title = "Not Found Data",
+  subtitle = "Try choose the other Menu",
   showReset,
 }) => {
   const router = useRouter();
@@ -20,13 +20,7 @@ const EmptyState: React.FC<EmptyState> = ({
     <div className="h-[60vh] flex flex-col gap-2 justify-center items-center">
       <Heading center title={title} subtitle={subtitle} />
       <div className="w-48 mt-4">
-        {showReset && (
-          <Button
-            outline
-            label="Nothing Data Something Error"
-            onClick={() => router.push("/")}
-          />
-        )}
+        {showReset && <Button outline label="Go to home" onClick={() => router.push("/")} />}
       </div>
     </div>
   );

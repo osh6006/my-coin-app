@@ -1,19 +1,18 @@
 "use client";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import useCoin from "../hooks/useCoin";
 import EmptyState from "../EmptyState";
 import Loading from "../Loading";
 import CoinCard from "./CoinCard";
+import { SafeUser } from "@/app/Types";
 
-interface MainContentsProps {}
+interface MainContentsProps {
+  currentUser?: SafeUser | null;
+}
 
-const MainContents: React.FC<MainContentsProps> = ({}) => {
+const MainContents: React.FC<MainContentsProps> = ({ currentUser }) => {
   const params = useSearchParams();
   const category = params?.get("category");
   const pathname = usePathname();
@@ -41,20 +40,58 @@ const MainContents: React.FC<MainContentsProps> = ({}) => {
       )}
       {isLoading || (
         <>
-          {data?.Data?.map((el: any, i: number) => (
-            <CoinCard
-              key={i}
-              name={el?.CoinInfo?.Name}
-              price={el?.RAW?.USD?.PRICE}
-              imgUrl={el?.CoinInfo?.ImageUrl}
-              toSymbol={el?.RAW?.USD?.TOSYMBOL}
-              openDay={el?.RAW?.USD?.OPENDAY}
-              highDay={el?.RAW?.USD?.HIGHDAY}
-              lowDay={el?.RAW?.USD?.LOWDAY}
-              rank={i + 1}
-              rating={el.CoinInfo.Rating.Weiss.Rating}
-            />
-          ))}
+          {category === "Top" &&
+            data?.Data?.map((el: any, i: number) => (
+              <CoinCard
+                currentUser={currentUser}
+                key={i}
+                name={el?.CoinInfo?.Name}
+                price={el?.RAW?.USD?.PRICE}
+                imgUrl={el?.CoinInfo?.ImageUrl}
+                toSymbol={el?.RAW?.USD?.TOSYMBOL}
+                openDay={el?.RAW?.USD?.OPENDAY}
+                highDay={el?.RAW?.USD?.HIGHDAY}
+                lowDay={el?.RAW?.USD?.LOWDAY}
+                rank={i + 1}
+                rating={el.CoinInfo.Rating.Weiss.Rating}
+                coinId={el.CoinInfo.Internal}
+              />
+            ))}
+
+          {category === "Hot" &&
+            data?.Data?.map((el: any, i: number) => (
+              <CoinCard
+                currentUser={currentUser}
+                key={i}
+                name={el?.CoinInfo?.Name}
+                price={el?.RAW?.USD?.PRICE}
+                imgUrl={el?.CoinInfo?.ImageUrl}
+                toSymbol={el?.RAW?.USD?.TOSYMBOL}
+                openDay={el?.RAW?.USD?.OPENDAY}
+                highDay={el?.RAW?.USD?.HIGHDAY}
+                lowDay={el?.RAW?.USD?.LOWDAY}
+                rank={i + 1}
+                rating={el.CoinInfo.Rating.Weiss.Rating}
+                coinId={el.CoinInfo.Internal}
+              />
+            ))}
+          {category === "News" &&
+            data?.Data?.map((el: any, i: number) => (
+              <CoinCard
+                currentUser={currentUser}
+                key={i}
+                name={el?.CoinInfo?.Name}
+                price={el?.RAW?.USD?.PRICE}
+                imgUrl={el?.CoinInfo?.ImageUrl}
+                toSymbol={el?.RAW?.USD?.TOSYMBOL}
+                openDay={el?.RAW?.USD?.OPENDAY}
+                highDay={el?.RAW?.USD?.HIGHDAY}
+                lowDay={el?.RAW?.USD?.LOWDAY}
+                rank={i + 1}
+                rating={el.CoinInfo.Rating.Weiss.Rating}
+                coinId={el.CoinInfo.Internal}
+              />
+            ))}
         </>
       )}
     </div>

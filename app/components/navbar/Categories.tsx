@@ -3,8 +3,8 @@
 import React from "react";
 import Container from "../Container";
 import CategoryBox from "./CategoryBox";
-import { BiMedal, BiGitCompare } from "react-icons/bi";
-import { FaHotjar } from "react-icons/fa";
+import { BiGitCompare } from "react-icons/bi";
+import { FaHotjar, FaMedal } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 import { FaBitcoin } from "react-icons/fa";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -12,7 +12,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 export const categories = [
   {
     label: "Top",
-    icon: BiMedal,
+    icon: FaMedal,
     description: "This property is top price coin",
     isNew: false,
   },
@@ -56,7 +56,7 @@ const Categories = () => {
   return (
     <Container>
       <div className="pt-4 flex flex-row items-center justify-between overflow-x-auto">
-        {categories?.map(item => (
+        {categories?.map((item) => (
           <CategoryBox
             key={item?.label}
             label={item.label}
