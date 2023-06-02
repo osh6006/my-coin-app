@@ -5,12 +5,13 @@ import { SafeUser } from "../Types";
 import useFavorite from "./hooks/useFavorite";
 
 interface HeartButtonProps {
+  type?: string;
   coinId: string;
   currentUser?: SafeUser | null;
 }
 
-const HeartButton: React.FC<HeartButtonProps> = ({ coinId, currentUser }) => {
-  const { hasFavorite, toggleFavorite } = useFavorite({ coinId, currentUser });
+const HeartButton: React.FC<HeartButtonProps> = ({ coinId, currentUser, type = "coin" }) => {
+  const { hasFavorite, toggleFavorite } = useFavorite({ coinId, currentUser, type });
 
   return (
     <div onClick={toggleFavorite} className="relative transition cursor-pointer group ">

@@ -10,9 +10,10 @@ import useLoginModal from "./useLoginModal";
 interface IUseFavorite {
   coinId: string;
   currentUser?: SafeUser | null;
+  type: string;
 }
 
-const useFavorite = ({ coinId, currentUser }: IUseFavorite) => {
+const useFavorite = ({ coinId, currentUser, type }: IUseFavorite) => {
   const router = useRouter();
   const loginModal = useLoginModal();
 
@@ -29,21 +30,39 @@ const useFavorite = ({ coinId, currentUser }: IUseFavorite) => {
         return loginModal.onOpen();
       }
 
-      try {
-        let request;
-        if (hasFavorite) {
-          request = () => axios.delete(`/api/favorites/${coinId}`);
-        } else {
-          request = () => axios.post(`/api/favorites/${coinId}`);
+      if (type === "coin") {
+        try {
+          let request;
+          if (hasFavorite) {
+            request = () => axios.delete(`/api/favorites/${coinId}`);
+          } else {
+            request = () => axios.post(`/api/favorites/${coinId}`);
+          }
+          await request();
+          router.refresh();
+          toast.success("Success");
+        } catch (error) {
+          toast.error("Something went wrong.");
         }
-        await request();
-        router.refresh();
-        toast.success("Success");
-      } catch (error) {
-        toast.error("Something went wrong.");
+      }
+
+      if (type === "news") {
+        try {
+          let request;
+          if (hasFavorite) {
+            request = () => axios.delete(`/api/favorites/${coinId}`);
+          } else {
+            request = () => axios.post(`/api/favorites/${coinId}`);
+          }
+          await request();
+          router.refresh();
+          toast.success("Success");
+        } catch (error) {
+          toast.error("Something went wrong.");
+        }
       }
     },
-    [currentUser, hasFavorite, coinId, loginModal, router]
+    [currentUser, hasFavorite, coinId, loginModal, router, type]
   );
 
   return { hasFavorite, toggleFavorite };

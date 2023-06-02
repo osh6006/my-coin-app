@@ -7,6 +7,7 @@ import EmptyState from "../EmptyState";
 import Loading from "../Loading";
 import CoinCard from "./CoinCard";
 import { SafeUser } from "@/app/Types";
+import { CoinNewsCard } from "./NewsCard";
 
 interface MainContentsProps {
   currentUser?: SafeUser | null;
@@ -77,19 +78,16 @@ const MainContents: React.FC<MainContentsProps> = ({ currentUser }) => {
             ))}
           {category === "News" &&
             data?.Data?.map((el: any, i: number) => (
-              <CoinCard
-                currentUser={currentUser}
-                key={i}
-                name={el?.CoinInfo?.Name}
-                price={el?.RAW?.USD?.PRICE}
-                imgUrl={el?.CoinInfo?.ImageUrl}
-                toSymbol={el?.RAW?.USD?.TOSYMBOL}
-                openDay={el?.RAW?.USD?.OPENDAY}
-                highDay={el?.RAW?.USD?.HIGHDAY}
-                lowDay={el?.RAW?.USD?.LOWDAY}
+              <CoinNewsCard
                 rank={i + 1}
-                rating={el.CoinInfo.Rating.Weiss.Rating}
-                coinId={el.CoinInfo.Internal}
+                imgUrl={el.imageurl}
+                name={el.title}
+                tags={el.tags}
+                categories={el.categories}
+                url={el.url}
+                key={el.id}
+                currentUser={currentUser}
+                newsId={el.id}
               />
             ))}
         </>

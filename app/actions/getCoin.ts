@@ -12,6 +12,11 @@ export default async function getCoin(category: string | null | undefined = "All
       return AllCoin.data;
     }
 
+    if (category === "News") {
+      const AllCoin = await axios.get("https://min-api.cryptocompare.com/data/v2/news/?lang=EN");
+      return AllCoin.data;
+    }
+
     return [];
   } catch (error: any) {
     throw new Error(error);
