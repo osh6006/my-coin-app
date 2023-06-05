@@ -7,6 +7,8 @@ import RegisterModal from "./components/modals/RegisterModal";
 import ToasterProvider from "./providers/ToasterProvider";
 import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
+import { Suspense } from "react";
+import Loading from "./components/Loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +21,7 @@ const font = Nunito({
   subsets: ["latin"],
 });
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const currentUser = await getCurrentUser();
 
   return (

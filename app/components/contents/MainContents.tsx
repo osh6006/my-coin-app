@@ -20,7 +20,9 @@ const MainContents: React.FC<MainContentsProps> = ({ currentUser }) => {
   const router = useRouter();
 
   if (pathname === "/" && category == null) {
-    router.push("?category=Top");
+    setTimeout(() => {
+      router.replace("/?category=Top");
+    }, 500);
   }
 
   const { isLoading, data } = useCoin(category);
@@ -32,7 +34,7 @@ const MainContents: React.FC<MainContentsProps> = ({ currentUser }) => {
   return (
     <div
       className="pt-24 relative grid grid-cols-1 
-          sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8"
+          sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 duration-300"
     >
       {isLoading && (
         <div className="absolute w-screen h-screen">
@@ -54,8 +56,9 @@ const MainContents: React.FC<MainContentsProps> = ({ currentUser }) => {
                 highDay={el?.RAW?.USD?.HIGHDAY}
                 lowDay={el?.RAW?.USD?.LOWDAY}
                 rank={i + 1}
-                rating={el.CoinInfo.Rating.Weiss.Rating}
-                coinId={el.CoinInfo.Internal}
+                rating={el?.CoinInfo?.Rating?.Weiss?.Rating}
+                coinId={el?.CoinInfo?.Id}
+                symbol={el?.CoinInfo?.Internal}
               />
             ))}
 
@@ -72,22 +75,23 @@ const MainContents: React.FC<MainContentsProps> = ({ currentUser }) => {
                 highDay={el?.RAW?.USD?.HIGHDAY}
                 lowDay={el?.RAW?.USD?.LOWDAY}
                 rank={i + 1}
-                rating={el.CoinInfo.Rating.Weiss.Rating}
-                coinId={el.CoinInfo.Internal}
+                rating={el?.CoinInfo?.Rating?.Weiss?.Rating}
+                coinId={el?.CoinInfo?.Internal}
+                symbol={el?.CoinInfo?.Id}
               />
             ))}
           {category === "News" &&
             data?.Data?.map((el: any, i: number) => (
               <CoinNewsCard
                 rank={i + 1}
-                imgUrl={el.imageurl}
-                name={el.title}
-                tags={el.tags}
-                categories={el.categories}
-                url={el.url}
-                key={el.id}
+                imgUrl={el?.imageurl}
+                name={el?.title}
+                tags={el?.tags}
+                categories={el?.categories}
+                url={el?.url}
+                key={el?.id}
                 currentUser={currentUser}
-                newsId={el.id}
+                newsId={el?.id}
               />
             ))}
         </>

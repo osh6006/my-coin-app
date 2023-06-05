@@ -18,6 +18,7 @@ interface CoinCardProps {
   toSymbol: string;
   currentUser?: SafeUser | null;
   coinId: string;
+  symbol: string;
 }
 
 const CoinCard: React.FC<CoinCardProps> = ({
@@ -31,11 +32,12 @@ const CoinCard: React.FC<CoinCardProps> = ({
   rating,
   toSymbol,
   coinId,
+  symbol,
   currentUser,
 }) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/coins/${coinId}`);
+    router.push(`/coins/${coinId}?symbol=${symbol}`);
   };
 
   const formatNumberK = (num?: number): string => {
@@ -58,7 +60,7 @@ const CoinCard: React.FC<CoinCardProps> = ({
       <div className="flex items-center justify-between">
         <Image
           className="rounded-full group-hover:scale-110 transition"
-          src={`https://www.cryptocompare.com${imgUrl}`}
+          src={imgUrl ? `https://www.cryptocompare.com${imgUrl}` : "https://placehold.co/600x400"}
           alt="coinLogo"
           width={100}
           height={100}
