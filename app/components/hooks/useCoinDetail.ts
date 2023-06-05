@@ -2,17 +2,22 @@ import getCoin from "@/app/actions/getCoin";
 import getCoinById from "@/app/actions/getCoinById";
 import { useEffect, useState } from "react";
 
-export default function useCoinDetail(coinId: string) {
+interface useCoinDetailParams {
+  coinId: string;
+  symbol: string;
+}
+
+export default function useCoinDetail({ coinId, symbol }: useCoinDetailParams) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>();
 
   useEffect(() => {
-    fetchData(coinId);
-  }, [coinId]);
+    fetchData({ coinId, symbol });
+  }, [coinId, symbol]);
 
-  async function fetchData(coinId: string) {
+  async function fetchData({ coinId, symbol }: useCoinDetailParams) {
     try {
-      const response = await getCoinById(coinId);
+      const response = await getCoinById({ coinId, symbol });
       setData(response);
       setIsLoading(false);
     } catch (error) {

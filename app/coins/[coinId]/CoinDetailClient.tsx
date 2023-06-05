@@ -2,7 +2,9 @@
 
 import { SafeUser } from "@/app/Types";
 import Loading from "@/app/components/Loading";
+import CoinDetailHeader from "@/app/components/coin/CoinDetailHeader";
 import useCoinDetail from "@/app/components/hooks/useCoinDetail";
+import Image from "next/image";
 
 interface CoinDetailClientProps {
   currentUser?: SafeUser | null;
@@ -11,10 +13,13 @@ interface CoinDetailClientProps {
 }
 
 const CoinDetailClient: React.FC<CoinDetailClientProps> = ({ currentUser, coinId, symbol }) => {
-  const { data, isLoading } = useCoinDetail(coinId);
+  const { data: coinInfo, isLoading } = useCoinDetail({ coinId, symbol });
 
-  // console.log(data);
-  // console.log(isLoading);
+  console.log(coinInfo);
+
+  const coinDetail = coinInfo?.detailCoinInfo?.Data[symbol];
+
+  console.log(coinDetail);
 
   if (isLoading) {
     return (
@@ -25,8 +30,14 @@ const CoinDetailClient: React.FC<CoinDetailClientProps> = ({ currentUser, coinId
   }
 
   return (
-    <div className=" max-w-screen-lg mx-auto">
-      <div className="flex flex-col gap-6">asdf</div>
+    <div className="max-w-screen-xl mx-auto">
+      <div className="flex items-center justify-center sm:block">
+        <CoinDetailHeader imgUrl={coinDetail.ImageUrl} name={coinDetail.CoinName} symbol={coinDetail.Symbol} />
+      </div>
+      <div className="flex gap-6">
+        <div className="flex-1 p-5 bg-pink-100 rounded-md"></div>
+        <div className="">asdf</div>
+      </div>
     </div>
   );
 };
