@@ -8,21 +8,20 @@ interface getCoinByIdParams {
 export default async function getCoinById({ coinId, symbol }: getCoinByIdParams) {
   try {
     if (coinId && symbol) {
-      const { data: dailyCoinInfo } = await axios.get(
-        `https://min-api.cryptocompare.com/data/v2/histoday?fsym=${symbol}&tsym=USD&limit=30`
-      );
+      const {
+        data: {
+          Data: { Data: dailyCoinInfo },
+        },
+      } = await axios.get(`https://min-api.cryptocompare.com/data/v2/histohour?fsym=${symbol}&tsym=USD&limit=23`);
 
-      const { data: hourlyCoinInfo } = await axios.get(
-        `https://min-api.cryptocompare.com/data/v2/histohour?fsym=${symbol}&tsym=USD&limit=24`
-      );
+      const {
+        data: {
+          Data: { Data: monthlyCoinInfo },
+        },
+      } = await axios.get(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${symbol}&tsym=USD&limit=30`);
 
-      const { data: minuteCoinInfo } = await axios.get(
-        `https://min-api.cryptocompare.com/data/v2/histominute?fsym=${symbol}&tsym=USD&limit=20`
-      );
-
-      const { data: priceCoinInfo } = await axios.get(
-        `https://min-api.cryptocompare.com/data/price?fsym=${symbol}&tsyms=USD`
-      );
+      const yearlyCoinInfo = await formatYearly(symbol);
+      const priceCoinInfo = await getCoinPrice(symbol);
 
       const { data: socialCoinInfo } = await axios.get(
         `https://min-api.cryptocompare.com/data/social/coin/latest?coinId=${coinId}`
@@ -33,9 +32,9 @@ export default async function getCoinById({ coinId, symbol }: getCoinByIdParams)
       );
 
       if (
+        !monthlyCoinInfo ||
+        !yearlyCoinInfo ||
         !dailyCoinInfo ||
-        !hourlyCoinInfo ||
-        !minuteCoinInfo ||
         !priceCoinInfo ||
         !socialCoinInfo ||
         !detailCoinInfo
@@ -43,11 +42,37 @@ export default async function getCoinById({ coinId, symbol }: getCoinByIdParams)
         return null;
       }
 
-      return { dailyCoinInfo, hourlyCoinInfo, minuteCoinInfo, priceCoinInfo, socialCoinInfo, detailCoinInfo };
+      return { monthlyCoinInfo, yearlyCoinInfo, dailyCoinInfo, priceCoinInfo, socialCoinInfo, detailCoinInfo };
     } else {
       return null;
     }
   } catch (error) {
     console.log(error);
   }
+}
+
+async function getCoinPrice(id: string) {
+  const currentDate = new Date();
+  const endDate = new Date(currentDate.getTime() - 24 * 60 * 60 * 1000); // 24시간 전의 시간
+
+  const historicalPriceResponse = await axios.get(
+    `https://min-api.cryptocompare.com/data/v2/histoday?fsym=${id}&tsym=USD&limit=1&toTs=${
+      endDate.getTime() / 1000
+    }&aggregate=1&e=CCCAGG`
+  );
+
+  const previousPrice = historicalPriceResponse.data.Data.Data[0].close;
+  const { data: todayPrice } = await axios.get(
+    `https://min-api.cryptocompare.com/data/price?fsym=${id}&tsyms=USD,JPY,EUR,KRW`
+  );
+
+  return { today: todayPrice, past: previousPrice };
+}
+
+async function formatYearly(symbol: string) {
+  const { data: yearlyCoinInfo } = await axios.get(
+    `https://min-api.cryptocompare.com/data/v2/histoday?fsym=${symbol}&tsym=USD&limit=364`
+  );
+
+  return yearlyCoinInfo.Data.Data.filter((el: any, index: number) => (index + 1) % 30 === 0);
 }

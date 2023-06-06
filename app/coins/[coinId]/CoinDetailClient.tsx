@@ -16,12 +16,13 @@ interface CoinDetailClientProps {
 const CoinDetailClient: React.FC<CoinDetailClientProps> = ({ currentUser, coinId, symbol }) => {
   const { data: coinInfo, isLoading } = useCoinDetail({ coinId, symbol });
 
-  console.log(coinInfo);
-
   const coinDetail = coinInfo?.detailCoinInfo?.Data[symbol];
-  const coinDaily = coinInfo?.dailyCoinInfo.Data;
+  const coinDaily = coinInfo?.dailyCoinInfo;
+  const coinMonthly = coinInfo?.monthlyCoinInfo;
+  const coinYearly = coinInfo?.yearlyCoinInfo;
+  const coinPrice = coinInfo?.priceCoinInfo;
 
-  console.log(coinDetail);
+  console.log(coinInfo);
 
   if (isLoading) {
     return (
@@ -32,17 +33,24 @@ const CoinDetailClient: React.FC<CoinDetailClientProps> = ({ currentUser, coinId
   }
 
   return (
-    <div className="p-5 max-w-screen-xl mx-auto sm:p-0">
-      <div className="flex items-center justify-center sm:block">
-        <CoinDetailHeader imgUrl={coinDetail.ImageUrl} name={coinDetail.CoinName} symbol={coinDetail.Symbol} />
-      </div>
-      <div className="flex flex-col items-center justify-center sm:justify-start px-2">
-        <div className="w-full  rounded-md">
-          <CoinDetailTabs />
-          <CoinDetailChart daily={coinDaily} />
+    <div className="flex flex-col sm:flex-row items-center justify-center p-5 max-w-screen-xl mx-auto sm:p-0 gap-6">
+      <div className="flex-1">
+        <div className="flex items-center justify-center sm:block">
+          <CoinDetailHeader
+            imgUrl={coinDetail?.ImageUrl}
+            name={coinDetail?.CoinName}
+            symbol={coinDetail?.Symbol}
+            price={coinPrice}
+          />
         </div>
-        <div className=""></div>
+        <div className="flex flex-col items-center justify-center sm:justify-start px-2">
+          <div className="w-full relative rounded-md">
+            <CoinDetailTabs />
+            <CoinDetailChart daily={coinDaily} monthly={coinMonthly} yearly={coinYearly} />
+          </div>
+        </div>
       </div>
+      <div className="min-w-[300px] bg-slate-500">asdf</div>
     </div>
   );
 };

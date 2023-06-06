@@ -12,9 +12,7 @@ const CoinDetailTabs = () => {
       {Tabs.map((el: any) => (
         <li
           className={`${
-            type !== el.type
-              ? "bg-white text-sky-950 hover:bg-sky-900 hover:text-white"
-              : "bg-sky-900 text-white hover:bg-white hover:text-sky-950"
+            type !== el.type ? "bg-white text-sky-950 hover:bg-sky-900 hover:text-white" : "bg-sky-900 text-white "
           } uppercase flex-1 text-center cursor-pointer p-2  font-bold  transition duration-300 border `}
           key={el.type}
           onClick={() => onChange(el.type)}
