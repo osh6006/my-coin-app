@@ -13,13 +13,12 @@ import {
   Bar,
 } from "recharts";
 import useCoinType from "../hooks/useChartType";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CoinDetailChartProps {
   daily: any;
   monthly: any;
   yearly: any;
-  type?: string;
 }
 
 const chartTabs = {
@@ -28,24 +27,71 @@ const chartTabs = {
   yearly: "month",
 };
 
-const CoinDetailChart: React.FC<CoinDetailChartProps> = ({ daily, monthly, yearly }) => {
-  const { type, onChange } = useCoinType();
-  const [newDaily, setNewDaily] = useState<any>(getNewDailyData(daily, type));
+const data = [
+  {
+    name: "Page A",
+    uv: 4000,
+    pv: 2400,
+    amt: 2400,
+  },
+  {
+    name: "Page B",
+    uv: 3000,
+    pv: 1398,
+    amt: 2210,
+  },
+  {
+    name: "Page C",
+    uv: 2000,
+    pv: 9800,
+    amt: 2290,
+  },
+  {
+    name: "Page D",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: "Page E",
+    uv: 1890,
+    pv: 4800,
+    amt: 2181,
+  },
+  {
+    name: "Page F",
+    uv: 2390,
+    pv: 3800,
+    amt: 2500,
+  },
+  {
+    name: "Page G",
+    uv: 3490,
+    pv: 4300,
+    amt: 2100,
+  },
+];
 
-  console.log(monthly);
+const CoinDetailChart: React.FC<CoinDetailChartProps> = ({ daily = data, monthly = data, yearly = data }) => {
+  const { type, onChange } = useCoinType();
+  const [chartData, setChartData] = useState<any>(getNewDailyData(daily, type));
+
+  useEffect(() => {
+    onChange("hours");
+  }, []);
 
   const handleTabs = (array: any, time: string) => {
     onChange(time);
-    setNewDaily(getNewDailyData(array, type));
+    setChartData(getNewDailyData(array, time));
   };
 
   return (
     <div className="w-[90%] h-96 my-10">
       <ul className="min-w-[300px] flex flex-row-reverse justify-center sm:justify-normal gap-2 text-sm uppercase my-5">
         <li
-          onClick={() => handleTabs(yearly, chartTabs.daily)}
+          onClick={() => handleTabs(yearly, chartTabs.yearly)}
           className={`${
-            type === "hours" ? "bg-sky-900 text-white" : "bg-gray-100 hover:bg-sky-900 hover:text-white"
+            type === "month" ? "bg-sky-900 text-white" : "bg-gray-100 hover:bg-sky-900 hover:text-white"
           } px-1 py-[3px] rounded-md cursor-pointer  duration-300 font-semibold flex justify-center items-center`}
         >
           1 Years
@@ -59,20 +105,20 @@ const CoinDetailChart: React.FC<CoinDetailChartProps> = ({ daily, monthly, yearl
           1 Month
         </li>
         <li
-          onClick={() => handleTabs(daily, chartTabs.yearly)}
+          onClick={() => handleTabs(daily, chartTabs.daily)}
           className={`${
-            type === "month" ? "bg-sky-900 text-white" : "bg-gray-100 hover:bg-sky-900 hover:text-white"
+            type === "hours" ? "bg-sky-900 text-white" : "bg-gray-100 hover:bg-sky-900 hover:text-white"
           } px-1 py-[2px] rounded-md cursor-pointer  duration-300 font-semibold flex justify-center items-center`}
         >
           1 Day
         </li>
       </ul>
-      {newDaily.length > 0 && (
+      {chartData.length > 0 && (
         <ResponsiveContainer width="100%" minWidth={300} height="100%">
-          <ComposedChart width={500} height={300} data={newDaily}>
+          <ComposedChart width={500} height={300} data={chartData || data}>
             <CartesianGrid stroke="#f5f5f5" />
-            <XAxis dataKey="time" />
-            <YAxis dataKey="close" name="weight" unit="$" />
+            <XAxis dataKey="time" name="price" />
+            <YAxis domain={[0, getChartRange(Math.floor(chartData[chartData.length - 1]?.close))]} dataKey={"close"} />
             <Tooltip />
             <Line type="natural" dataKey="close" stroke="#000435" activeDot={{ r: 8 }} />
             {/* <Legend /> */}
@@ -104,6 +150,7 @@ const CoinDetailChart: React.FC<CoinDetailChartProps> = ({ daily, monthly, yearl
       minutes: date.getMinutes(),
       seconds: date.getSeconds(),
     };
+
     return dateObj[type];
   }
 
@@ -111,6 +158,25 @@ const CoinDetailChart: React.FC<CoinDetailChartProps> = ({ daily, monthly, yearl
     return array.map((el: any) => {
       return { ...el, time: timeStampToTime(el.time, type) };
     });
+  }
+
+  function getChartRange(num: number): number {
+    if (num > 10000) {
+      return Math.floor(num + 10000);
+    }
+    if (num > 5000) {
+      return Math.floor(num + 5000);
+    }
+    if (num > 1000) {
+      return Math.floor(num + 1000);
+    }
+    if (num > 100) {
+      return Math.floor(num + 100);
+    }
+    if (num > 10) {
+      return Math.floor(num + 10);
+    }
+    return Math.floor(num + 2);
   }
 };
 

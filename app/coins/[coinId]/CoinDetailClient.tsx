@@ -4,6 +4,7 @@ import { SafeUser } from "@/app/Types";
 import Loading from "@/app/components/Loading";
 import CoinDetailChart from "@/app/components/coin/CoinDetailChart";
 import CoinDetailHeader from "@/app/components/coin/CoinDetailHeader";
+import CoinDetailSocial from "@/app/components/coin/CoinDetailSocial";
 import CoinDetailTabs from "@/app/components/coin/CoinDetailTabs";
 import useCoinDetail from "@/app/components/hooks/useCoinDetail";
 
@@ -21,9 +22,7 @@ const CoinDetailClient: React.FC<CoinDetailClientProps> = ({ currentUser, coinId
   const coinMonthly = coinInfo?.monthlyCoinInfo;
   const coinYearly = coinInfo?.yearlyCoinInfo;
   const coinPrice = coinInfo?.priceCoinInfo;
-
-  console.log(coinInfo);
-
+  const coinSocial = coinInfo?.socialCoinInfo.Data;
   if (isLoading) {
     return (
       <div className="w-screen h-screen relative">
@@ -32,8 +31,10 @@ const CoinDetailClient: React.FC<CoinDetailClientProps> = ({ currentUser, coinId
     );
   }
 
+  console.log(coinInfo);
+
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center p-5 max-w-screen-xl mx-auto sm:p-0 gap-6">
+    <div className="flex flex-col sm:flex-row items-center justify-center p-5 max-w-screen-xl mx-auto sm:p-0 gap-3">
       <div className="flex-1">
         <div className="flex items-center justify-center sm:block">
           <CoinDetailHeader
@@ -50,7 +51,7 @@ const CoinDetailClient: React.FC<CoinDetailClientProps> = ({ currentUser, coinId
           </div>
         </div>
       </div>
-      <div className="min-w-[300px] bg-slate-500">asdf</div>
+      <CoinDetailSocial data={coinSocial} />
     </div>
   );
 };

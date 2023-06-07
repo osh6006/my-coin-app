@@ -6,6 +6,8 @@ interface getCoinByIdParams {
 }
 
 export default async function getCoinById({ coinId, symbol }: getCoinByIdParams) {
+  console.log(coinId, process.env.COIN_API_KEY);
+
   try {
     if (coinId && symbol) {
       const {
@@ -24,7 +26,7 @@ export default async function getCoinById({ coinId, symbol }: getCoinByIdParams)
       const priceCoinInfo = await getCoinPrice(symbol);
 
       const { data: socialCoinInfo } = await axios.get(
-        `https://min-api.cryptocompare.com/data/social/coin/latest?coinId=${coinId}`
+        `https://min-api.cryptocompare.com/data/social/coin/latest?coinId=${coinId}&api_key=d356ae1a1f1efaa2456b289b6631731e66f3fff9c3d30a249adcce1265586191`
       );
 
       const { data: detailCoinInfo } = await axios.get(
