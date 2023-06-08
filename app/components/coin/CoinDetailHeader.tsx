@@ -21,7 +21,7 @@ const CoinDetailHeader: React.FC<CoinDetailHeaderProps> = ({ imgUrl, name, symbo
       <div className="flex gap-3 items-center mx-auto ">
         <Image
           loading="lazy"
-          src={`https://www.cryptocompare.com${imgUrl}`}
+          src={(imgUrl && `https://www.cryptocompare.com${imgUrl}`) || "https://placehold.co/600x400"}
           alt="coinLogo"
           width={80}
           height={80}
@@ -29,13 +29,13 @@ const CoinDetailHeader: React.FC<CoinDetailHeaderProps> = ({ imgUrl, name, symbo
         />
         <div className="flex items-center gap-4 ">
           <div className="flex gap-3 items-center">
-            <h1 className="font-bold text-2xl sm:text-4xl">{name}</h1>
+            <h1 className="font-bold text-3xl sm:text-4xl">{name}</h1>
             <span className="py-1 px-2 bg-gray-200 text-gray-700 font-bold uppercase text-sm rounded-xl">{symbol}</span>
           </div>
         </div>
       </div>
       <div className="flex items-center mx-5 gap-4">
-        <div className="font-semibold text-3xl sm:text-5xl">{price?.today.USD} $</div>
+        <div className="font-semibold text-4xl sm:text-5xl">{price?.today.USD} $</div>
         {price && (
           <div
             className={`${

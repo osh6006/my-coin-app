@@ -15,7 +15,7 @@ const CoinDetailSocial: React.FC<CoinDetailSocialProps> = ({ data }) => {
           title="Reddit"
           icon={BsReddit}
           color="text-orange-500"
-          contents={data.Reddit}
+          contents={data?.Reddit}
           type="reddit"
           open={false}
         />
@@ -25,7 +25,7 @@ const CoinDetailSocial: React.FC<CoinDetailSocialProps> = ({ data }) => {
           title="Facebook"
           icon={BsFacebook}
           color="text-blue-500"
-          contents={data.Facebook}
+          contents={data?.Facebook}
           type="facebook"
           open={true}
         />
@@ -35,7 +35,7 @@ const CoinDetailSocial: React.FC<CoinDetailSocialProps> = ({ data }) => {
           title="Twitter"
           icon={BsTwitter}
           color="text-sky-500"
-          contents={data.Twitter}
+          contents={data?.Twitter}
           type="twitter"
           open={true}
         />
@@ -45,7 +45,7 @@ const CoinDetailSocial: React.FC<CoinDetailSocialProps> = ({ data }) => {
           title="Crypto Compare"
           icon={BiGitCompare}
           color="text-green-500"
-          contents={data.CryptoCompare}
+          contents={data?.CryptoCompare}
           type="cryptoCompare"
           open={true}
         />

@@ -76,8 +76,8 @@ const MainContents: React.FC<MainContentsProps> = ({ currentUser }) => {
                 lowDay={el?.RAW?.USD?.LOWDAY}
                 rank={i + 1}
                 rating={el?.CoinInfo?.Rating?.Weiss?.Rating}
-                coinId={el?.CoinInfo?.Internal}
-                symbol={el?.CoinInfo?.Id}
+                coinId={el?.CoinInfo?.Id}
+                symbol={el?.CoinInfo?.Internal}
               />
             ))}
           {category === "News" &&

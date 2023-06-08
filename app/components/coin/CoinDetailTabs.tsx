@@ -8,7 +8,7 @@ const CoinDetailTabs = () => {
   const { type, onChange } = useCoinDetailTabs();
 
   return (
-    <ul className="w-full max-w-md flex items-center justify-around rounded-md overflow-hidden gap-2">
+    <ul className="w-screen px-10 max-w-md flex items-center justify-around rounded-md overflow-hidden gap-2 sm:px-0">
       {Tabs.map((el: any) => (
         <li
           className={`${

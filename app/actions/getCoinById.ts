@@ -6,8 +6,6 @@ interface getCoinByIdParams {
 }
 
 export default async function getCoinById({ coinId, symbol }: getCoinByIdParams) {
-  console.log(coinId, process.env.COIN_API_KEY);
-
   try {
     if (coinId && symbol) {
       const {
@@ -46,7 +44,7 @@ export default async function getCoinById({ coinId, symbol }: getCoinByIdParams)
 
       return { monthlyCoinInfo, yearlyCoinInfo, dailyCoinInfo, priceCoinInfo, socialCoinInfo, detailCoinInfo };
     } else {
-      return null;
+      return undefined;
     }
   } catch (error) {
     console.log(error);
@@ -76,5 +74,5 @@ async function formatYearly(symbol: string) {
     `https://min-api.cryptocompare.com/data/v2/histoday?fsym=${symbol}&tsym=USD&limit=364`
   );
 
-  return yearlyCoinInfo.Data.Data.filter((el: any, index: number) => (index + 1) % 30 === 0);
+  return yearlyCoinInfo?.Data?.Data?.filter((el: any, index: number) => (index + 1) % 30 === 0);
 }
